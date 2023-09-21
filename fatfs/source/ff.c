@@ -23,6 +23,12 @@
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of device I/O functions */
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#define FF_EXPORT EMSCRIPTEN_KEEPALIVE
+#else
+#define FF_EXPORT
+#endif
 
 /*--------------------------------------------------------------------------
 
@@ -3653,7 +3659,7 @@ static FRESULT validate (	/* Returns FR_OK or FR_INVALID_OBJECT */
 /*-----------------------------------------------------------------------*/
 /* Mount/Unmount a Logical Drive                                         */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_mount (
 	FATFS* fs,			/* Pointer to the filesystem object to be registered (NULL:unmount)*/
 	const TCHAR* path,	/* Logical drive number to be mounted/unmounted */
@@ -3713,7 +3719,7 @@ FRESULT f_mount (
 /*-----------------------------------------------------------------------*/
 /* Open or Create a File                                                 */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_open (
 	FIL* fp,			/* Pointer to the blank file object */
 	const TCHAR* path,	/* Pointer to the file name */
@@ -3910,7 +3916,7 @@ FRESULT f_open (
 /*-----------------------------------------------------------------------*/
 /* Read File                                                             */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_read (
 	FIL* fp, 	/* Open file to be read */
 	void* buff,	/* Data buffer to store the read data */
@@ -4010,7 +4016,7 @@ FRESULT f_read (
 /*-----------------------------------------------------------------------*/
 /* Write File                                                            */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_write (
 	FIL* fp,			/* Open file to be written */
 	const void* buff,	/* Data to be written */
@@ -4131,7 +4137,7 @@ FRESULT f_write (
 /*-----------------------------------------------------------------------*/
 /* Synchronize the File                                                  */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_sync (
 	FIL* fp		/* Open file to be synced */
 )
@@ -4212,7 +4218,7 @@ FRESULT f_sync (
 /*-----------------------------------------------------------------------*/
 /* Close File                                                            */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_close (
 	FIL* fp		/* Open file to be closed */
 )
@@ -4248,7 +4254,7 @@ FRESULT f_close (
 /*-----------------------------------------------------------------------*/
 /* Change Current Directory or Current Drive, Get Current Directory      */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_chdrive (
 	const TCHAR* path		/* Drive number to set */
 )
@@ -4265,7 +4271,7 @@ FRESULT f_chdrive (
 }
 
 
-
+FF_EXPORT
 FRESULT f_chdir (
 	const TCHAR* path	/* Pointer to the directory path */
 )
@@ -4328,6 +4334,7 @@ FRESULT f_chdir (
 
 
 #if FF_FS_RPATH >= 2
+FF_EXPORT
 FRESULT f_getcwd (
 	TCHAR* buff,	/* Pointer to the directory path */
 	UINT len		/* Size of buff in unit of TCHAR */
@@ -4429,7 +4436,7 @@ FRESULT f_getcwd (
 /*-----------------------------------------------------------------------*/
 /* Seek File Read/Write Pointer                                          */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_lseek (
 	FIL* fp,		/* Pointer to the file object */
 	FSIZE_t ofs		/* File pointer from top of file */
@@ -4593,7 +4600,7 @@ FRESULT f_lseek (
 /*-----------------------------------------------------------------------*/
 /* Create a Directory Object                                             */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_opendir (
 	DIR* dp,			/* Pointer to directory object to create */
 	const TCHAR* path	/* Pointer to the directory path */
@@ -4659,7 +4666,7 @@ FRESULT f_opendir (
 /*-----------------------------------------------------------------------*/
 /* Close Directory                                                       */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_closedir (
 	DIR *dp		/* Pointer to the directory object to be closed */
 )
@@ -4689,7 +4696,7 @@ FRESULT f_closedir (
 /*-----------------------------------------------------------------------*/
 /* Read Directory Entries in Sequence                                    */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_readdir (
 	DIR* dp,			/* Pointer to the open directory object */
 	FILINFO* fno		/* Pointer to file information to return */
@@ -4725,7 +4732,7 @@ FRESULT f_readdir (
 /*-----------------------------------------------------------------------*/
 /* Find Next File                                                        */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_findnext (
 	DIR* dp,		/* Pointer to the open directory object */
 	FILINFO* fno	/* Pointer to the file information structure */
@@ -4750,7 +4757,7 @@ FRESULT f_findnext (
 /*-----------------------------------------------------------------------*/
 /* Find First File                                                       */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_findfirst (
 	DIR* dp,				/* Pointer to the blank directory object */
 	FILINFO* fno,			/* Pointer to the file information structure */
@@ -4777,7 +4784,7 @@ FRESULT f_findfirst (
 /*-----------------------------------------------------------------------*/
 /* Get File Status                                                       */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_stat (
 	const TCHAR* path,	/* Pointer to the file path */
 	FILINFO* fno		/* Pointer to file information to return */
@@ -4812,7 +4819,7 @@ FRESULT f_stat (
 /*-----------------------------------------------------------------------*/
 /* Get Number of Free Clusters                                           */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_getfree (
 	const TCHAR* path,	/* Logical drive number */
 	DWORD* nclst,		/* Pointer to a variable to return number of free clusters */
@@ -4908,7 +4915,7 @@ FRESULT f_getfree (
 /*-----------------------------------------------------------------------*/
 /* Truncate File                                                         */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_truncate (
 	FIL* fp		/* Pointer to the file object */
 )
@@ -4958,7 +4965,7 @@ FRESULT f_truncate (
 /*-----------------------------------------------------------------------*/
 /* Delete a File/Directory                                               */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_unlink (
 	const TCHAR* path		/* Pointer to the file or directory path */
 )
@@ -5052,7 +5059,7 @@ FRESULT f_unlink (
 /*-----------------------------------------------------------------------*/
 /* Create a Directory                                                    */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_mkdir (
 	const TCHAR* path		/* Pointer to the directory path */
 )
@@ -5136,7 +5143,7 @@ FRESULT f_mkdir (
 /*-----------------------------------------------------------------------*/
 /* Rename a File/Directory                                               */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_rename (
 	const TCHAR* path_old,	/* Pointer to the object name to be renamed */
 	const TCHAR* path_new	/* Pointer to the new name */
@@ -5246,7 +5253,7 @@ FRESULT f_rename (
 /*-----------------------------------------------------------------------*/
 /* Change Attribute                                                      */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_chmod (
 	const TCHAR* path,	/* Pointer to the file path */
 	BYTE attr,			/* Attribute bits */
@@ -5293,7 +5300,7 @@ FRESULT f_chmod (
 /*-----------------------------------------------------------------------*/
 /* Change Timestamp                                                      */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_utime (
 	const TCHAR* path,	/* Pointer to the file/directory name */
 	const FILINFO* fno	/* Pointer to the timestamp to be set */
@@ -5340,7 +5347,7 @@ FRESULT f_utime (
 /*-----------------------------------------------------------------------*/
 /* Get Volume Label                                                      */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_getlabel (
 	const TCHAR* path,	/* Logical drive number */
 	TCHAR* label,		/* Buffer to store the volume label */
@@ -5441,7 +5448,7 @@ FRESULT f_getlabel (
 /*-----------------------------------------------------------------------*/
 /* Set Volume Label                                                      */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_setlabel (
 	const TCHAR* label	/* Volume label to set with heading logical drive number */
 )
@@ -5561,7 +5568,7 @@ FRESULT f_setlabel (
 /*-----------------------------------------------------------------------*/
 /* Allocate a Contiguous Blocks to the File                              */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_expand (
 	FIL* fp,		/* Pointer to the file object */
 	FSIZE_t fsz,	/* File size to be expanded to */
@@ -5657,7 +5664,7 @@ FRESULT f_expand (
 /*-----------------------------------------------------------------------*/
 /* Forward Data to the Stream Directly                                   */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_forward (
 	FIL* fp, 						/* Pointer to the file object */
 	UINT (*func)(const BYTE*,UINT),	/* Pointer to the streaming function */
@@ -5878,7 +5885,7 @@ static FRESULT create_partition (
 }
 
 
-
+FF_EXPORT
 FRESULT f_mkfs (
 	const TCHAR* path,		/* Logical drive number */
 	const MKFS_PARM* opt,	/* Format options */
@@ -6382,7 +6389,7 @@ FRESULT f_mkfs (
 /*-----------------------------------------------------------------------*/
 /* Create Partition Table on the Physical Drive                          */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_fdisk (
 	BYTE pdrv,			/* Physical drive number */
 	const LBA_t ptbl[],	/* Pointer to the size table for each partitions */
@@ -6422,7 +6429,7 @@ FRESULT f_fdisk (
 /*-----------------------------------------------------------------------*/
 /* Get a String from the File                                            */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 TCHAR* f_gets (
 	TCHAR* buff,	/* Pointer to the buffer to store read string */
 	int len,		/* Size of string buffer (items) */
@@ -6726,7 +6733,7 @@ static void putc_init (putbuff* pb, FIL* fp)
 }
 
 
-
+FF_EXPORT
 int f_putc (
 	TCHAR c,	/* A character to be output */
 	FIL* fp		/* Pointer to the file object */
@@ -6746,7 +6753,7 @@ int f_putc (
 /*-----------------------------------------------------------------------*/
 /* Put a String to the File                                              */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 int f_puts (
 	const TCHAR* str,	/* Pointer to the string to be output */
 	FIL* fp				/* Pointer to the file object */
@@ -6889,7 +6896,7 @@ static void ftoa (
 #endif	/* FF_PRINT_FLOAT && FF_INTDEF == 2 */
 
 
-
+FF_EXPORT
 int f_printf (
 	FIL* fp,			/* Pointer to the file object */
 	const TCHAR* fmt,	/* Pointer to the format string */
@@ -7057,7 +7064,7 @@ int f_printf (
 /*-----------------------------------------------------------------------*/
 /* Set Active Codepage for the Path Name                                 */
 /*-----------------------------------------------------------------------*/
-
+FF_EXPORT
 FRESULT f_setcp (
 	WORD cp		/* Value to be set as active code page */
 )
