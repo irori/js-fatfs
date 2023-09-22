@@ -1,0 +1,23 @@
+{
+  "name": "js-fatfs",
+  "version": "0.0.0",
+  "author": "irori <irorin@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irori/js-fatfs.git"
+  },
+  "main": "./dist/fatfs.js",
+  "description": "JavaScript/TypeScript bindings for the FatFs library.",
+  "keywords": [
+    "filesystem",
+    "fatfs",
+    "fat12",
+    "fat16",
+    "fat32"
+  ],
+  "license": "BSD-1-Clause",
+  "scripts": {
+    "build": "make -C src"
+  },
+  "types": "./dist/fatfs.d.ts"
+}

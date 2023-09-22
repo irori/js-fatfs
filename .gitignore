@@ -1,0 +1,3 @@
+node_modules/
+/dist/fatfs.js
+/dist/fatfs.wasm
