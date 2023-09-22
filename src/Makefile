@@ -1,5 +1,9 @@
 EMFLAGS = \
 	-s ENVIRONMENT=web,node \
+	-s ALLOW_MEMORY_GROWTH=1 \
+	-s STACK_SIZE=8192 \
+	-s INITIAL_MEMORY=65536 \
+	-s MALLOC=emmalloc \
 	-s MODULARIZE \
 	-s EXPORT_ES6 \
 	-s EXPORTED_RUNTIME_METHODS=cwrap,getValue,setValue \
