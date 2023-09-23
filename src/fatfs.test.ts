@@ -47,16 +47,18 @@ function mount(ff: FatFs.FatFs) {
 	expect(ff.f_mount(fs, '', 1)).toBe(ff.FR_OK);
 }
 
-function createFile(ff: FatFs.FatFs, path: string, contents: Uint8Array) {
+function createFile(ff: FatFs.FatFs, path: string, contents?: Uint8Array) {
 	const fp = ff.malloc(ff.sizeof_FIL);
 	expect(ff.f_open(fp, path, ff.FA_WRITE | ff.FA_CREATE_NEW)).toBe(ff.FR_OK);
-	const buf = ff.malloc(contents.byteLength);
-	ff.HEAPU8.set(contents, buf);
-	const bw = ff.malloc(4);
-	expect(ff.f_write(fp, buf, contents.byteLength, bw)).toBe(ff.FR_OK);
-	expect(ff.getValue(bw, 'i32')).toBe(contents.byteLength);
-	ff.free(bw);
-	ff.free(buf);
+	if (contents) {
+		const buf = ff.malloc(contents.byteLength);
+		ff.HEAPU8.set(contents, buf);
+		const bw = ff.malloc(4);
+		expect(ff.f_write(fp, buf, contents.byteLength, bw)).toBe(ff.FR_OK);
+		expect(ff.getValue(bw, 'i32')).toBe(contents.byteLength);
+		ff.free(bw);
+		ff.free(buf);
+	}
 	expect(ff.f_close(fp)).toBe(ff.FR_OK);
 	ff.free(fp);
 }
@@ -126,7 +128,7 @@ test('read directory', async () => {
 	const ff = await createFatFs({ disk_ops: new MockDisk() });
 	makeFileSystem(ff);
 	mount(ff);
-	createFile(ff, 'HELLO.TXT', new TextEncoder().encode('Hello, world!'));
+	createFile(ff, 'HELLO.TXT');
 	expect(readDir(ff, '/')).toEqual(['HELLO.TXT']);
 });
 
@@ -139,4 +141,16 @@ test('create directory', async () => {
 	expect(readDir(ff, '/')).toEqual(['SUB1']);
 	expect(readDir(ff, '/SUB1')).toEqual(['SUB2']);
 	expect(readDir(ff, '/SUB1/SUB2')).toEqual([]);
+});
+
+test('Non-ASCII long filename', async () => {
+	const ff = await createFatFs({ disk_ops: new MockDisk() });
+	expect(ff.f_setcp(932)).toBe(ff.FR_OK);
+	makeFileSystem(ff);
+	mount(ff);
+	createFile(ff, 'こんにちは.txt');
+	const fno = ff.malloc(ff.sizeof_FILINFO);
+	expect(ff.f_stat('こんにちは.txt', fno)).toBe(ff.FR_OK);
+	expect(ff.FILINFO_altname(fno)).toBe('こんに~1.TXT');
+	ff.free(fno);
 });
