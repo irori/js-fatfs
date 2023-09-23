@@ -3,13 +3,14 @@
 #include "diskio.h"
 
 void define_constant(const char* name, int value) {
-	printf("export const %s = %d;\n", name, value);
+	printf("%s=%d,", name, value);
 }
 
 #define DEFINE_CONSTANT(name) define_constant(#name, name)
 #define DEFINE_SIZEOF(type) define_constant("sizeof_" #type, sizeof(type))
 
 int main() {
+	printf("\nexport const ");
 	// ffconf.h
 	DEFINE_CONSTANT(FF_MAX_SS);
 
@@ -108,4 +109,6 @@ int main() {
 	DEFINE_CONSTANT(ATA_GET_REV);
 	DEFINE_CONSTANT(ATA_GET_MODEL);
 	DEFINE_CONSTANT(ATA_GET_SN);
+
+	printf("create=Module;\n");
 }

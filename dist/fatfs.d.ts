@@ -72,8 +72,8 @@ interface FatFsOptions {
 	disk_ops: DiskIO;
 }
 
-declare function createFatFs(opts: FatFsOptions): Promise<FatFs>;
-export default createFatFs;
+export declare function create(opts: FatFsOptions): Promise<FatFs>;
+export default create;
 
 export declare const FF_MAX_SS: number;
 export declare const sizeof_FATFS: number;
