@@ -1,3 +1,6 @@
 node_modules/
-/dist/fatfs.js
-/dist/fatfs.wasm
+src/gen_constants.js
+src/gen_constants.wasm
+src/constants.js
+dist/fatfs.js
+dist/fatfs.wasm
