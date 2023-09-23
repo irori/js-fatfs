@@ -19,5 +19,8 @@
   "scripts": {
     "build": "make -C src"
   },
-  "types": "./dist/fatfs.d.ts"
+  "types": "./dist/fatfs.d.ts",
+  "devDependencies": {
+    "bun-types": "^1.0.3"
+  }
 }
