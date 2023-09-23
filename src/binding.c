@@ -5,23 +5,23 @@
 #include "diskio.h"
 
 EM_JS(DSTATUS, disk_initialize, (BYTE pdrv), {
-	return Module.disk_ops.initialize(pdrv);
+	return Module.disk_ops.initialize(Module, pdrv);
 });
 
 EM_JS(DSTATUS, disk_status, (BYTE pdrv), {
-	return Module.disk_ops.status(pdrv);
+	return Module.disk_ops.status(Module, pdrv);
 });
 
 EM_JS(DRESULT, disk_read, (BYTE pdrv, BYTE* buff, LBA_t sector, UINT count), {
-	return Module.disk_ops.read(pdrv, buff, sector, count);
+	return Module.disk_ops.read(Module, pdrv, buff, sector, count);
 });
 
 EM_JS(DRESULT, disk_write, (BYTE pdrv, const BYTE* buff, LBA_t sector, UINT count), {
-	return Module.disk_ops.write(pdrv, buff, sector, count);
+	return Module.disk_ops.write(Module, pdrv, buff, sector, count);
 });
 
 EM_JS(DRESULT, disk_ioctl, (BYTE pdrv, BYTE cmd, void* buff), {
-	return Module.disk_ops.ioctl(pdrv, cmd, buff);
+	return Module.disk_ops.ioctl(Module, pdrv, cmd, buff);
 });
 
 // TODO: allow overriding this function

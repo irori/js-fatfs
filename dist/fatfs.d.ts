@@ -137,11 +137,11 @@ export interface FatFs {
 }
 
 export interface DiskIO {
-	initialize: (pdrv: number) => number;
-	status: (pdrv: number) => number;
-	read: (pdrv: number, buff: pointer, sector: number, count: number) => number;
-	write: (pdrv: number, buff: pointer, sector: number, count: number) => number;
-	ioctl: (pdrv: number, cmd: number, buff: pointer) => number;
+	initialize: (ff: FatFs, pdrv: number) => number;
+	status: (ff: FatFs, pdrv: number) => number;
+	read: (ff: FatFs, pdrv: number, buff: pointer, sector: number, count: number) => number;
+	write: (ff: FatFs, pdrv: number, buff: pointer, sector: number, count: number) => number;
+	ioctl: (ff: FatFs, pdrv: number, cmd: number, buff: pointer) => number;
 }
 
 interface FatFsOptions {
