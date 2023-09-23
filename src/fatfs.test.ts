@@ -26,6 +26,9 @@ class MockDisk implements FatFs.DiskIO {
 			case FatFs.GET_SECTOR_COUNT:
 				ff.setValue(buff, this.buf.byteLength / this.sectorSize, 'i32');
 				return FatFs.RES_OK;
+			case FatFs.GET_SECTOR_SIZE:
+				ff.setValue(buff, this.sectorSize, 'i16');
+				return FatFs.RES_OK;
 			case FatFs.GET_BLOCK_SIZE:
 				ff.setValue(buff, 1, 'i32');
 				return FatFs.RES_OK;
