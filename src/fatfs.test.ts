@@ -45,9 +45,9 @@ function makeFileSystem(ff: FatFs.FatFs) {
 	ff.free(work);
 }
 
-function mount(ff: FatFs.FatFs) {
+function mount(ff: FatFs.FatFs, path: string = '') {
 	const fs = ff.malloc(FatFs.sizeof_FATFS);
-	expect(ff.f_mount(fs, '', 1)).toBe(FatFs.FR_OK);
+	expect(ff.f_mount(fs, path, 1)).toBe(FatFs.FR_OK);
 }
 
 function createFile(ff: FatFs.FatFs, path: string, contents?: Uint8Array) {
@@ -146,7 +146,7 @@ test('create directory', async () => {
 	expect(readDir(ff, '/SUB1/SUB2')).toEqual([]);
 });
 
-test('Non-ASCII long filename', async () => {
+test('non-ASCII long filename', async () => {
 	const ff = await FatFs.create({ diskio: new MockDisk() });
 	expect(ff.f_setcp(932)).toBe(FatFs.FR_OK);
 	makeFileSystem(ff);
@@ -156,4 +156,13 @@ test('Non-ASCII long filename', async () => {
 	expect(ff.f_stat('こんにちは.txt', fno)).toBe(FatFs.FR_OK);
 	expect(ff.FILINFO_altname(fno)).toBe('こんに~1.TXT');
 	ff.free(fno);
+});
+
+test('multiple drives', async () => {
+	const ff = await FatFs.create({ diskio: new MockDisk() });
+	makeFileSystem(ff);
+	mount(ff, '0:');
+	mount(ff, '9:');
+	expect(ff.f_unmount('0:')).toBe(FatFs.FR_OK);
+	expect(ff.f_unmount('9:')).toBe(FatFs.FR_OK);
 });
