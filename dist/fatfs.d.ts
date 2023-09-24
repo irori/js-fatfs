@@ -69,7 +69,7 @@ export interface DiskIO {
 }
 
 interface FatFsOptions {
-	disk_ops: DiskIO;
+	diskio: DiskIO;
 }
 
 export declare function create(opts: FatFsOptions): Promise<FatFs>;

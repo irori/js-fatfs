@@ -100,25 +100,25 @@ function readDir(ff: FatFs.FatFs, path: string): string[] {
 }
 
 test('f_mkfs', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);
 });
 
 test('f_mount', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);
 	mount(ff);
 });
 
 test('create file', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);
 	mount(ff);
 	createFile(ff, 'HELLO.TXT', new TextEncoder().encode('Hello, world!'));
 });
 
 test('read file', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);
 	mount(ff);
 	const text = 'Hello, world!';
@@ -128,7 +128,7 @@ test('read file', async () => {
 });
 
 test('read directory', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);
 	mount(ff);
 	createFile(ff, 'HELLO.TXT');
@@ -136,7 +136,7 @@ test('read directory', async () => {
 });
 
 test('create directory', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);
 	mount(ff);
 	expect(ff.f_mkdir('/SUB1')).toBe(FatFs.FR_OK);
@@ -147,7 +147,7 @@ test('create directory', async () => {
 });
 
 test('Non-ASCII long filename', async () => {
-	const ff = await FatFs.create({ disk_ops: new MockDisk() });
+	const ff = await FatFs.create({ diskio: new MockDisk() });
 	expect(ff.f_setcp(932)).toBe(FatFs.FR_OK);
 	makeFileSystem(ff);
 	mount(ff);
