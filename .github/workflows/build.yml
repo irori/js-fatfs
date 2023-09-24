@@ -1,0 +1,47 @@
+name: Build
+on: [push, pull_request]
+
+env:
+  EM_VERSION: 3.1.46
+  EM_CACHE_FOLDER: 'emsdk-cache'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Setup cache
+      id: cache-system-libraries
+      uses: actions/cache@v3
+      with:
+        path: ${{env.EM_CACHE_FOLDER}}
+        key: ${{env.EM_VERSION}}-${{ runner.os }}
+
+    - name: Install Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Setup Emscripten toolchain
+      uses: mymindstorm/setup-emsdk@v12
+      with:
+        version: ${{ env.EM_VERSION }}
+        actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+    - name: Build
+      run: bun run build
+
+    - name: Test
+      # specify src/ so that files under emsdk-cache/ will not run
+      run: bun test src/
+
+    - name: Package
+      run: npm pack
+
+    - name: Upload package tarball
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-tarball
+        path: js-fatfs-*.tgz
