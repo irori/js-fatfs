@@ -1,0 +1,6 @@
+# https://EditorConfig.org
+root = true
+
+[*.{h,c,js,ts}]
+indent_style = tab
+indent_size = 4

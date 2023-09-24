@@ -1,0 +1,7 @@
+.editorconfig
+.github
+emsdk-cache
+fatfs/source
+src
+bun.lockb
+js-fatfs-*.tgz
