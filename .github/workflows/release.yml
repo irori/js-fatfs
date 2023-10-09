@@ -1,0 +1,43 @@
+name: Publish
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+
+env:
+  EM_VERSION: 3.1.46
+  EM_CACHE_FOLDER: 'emsdk-cache'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Setup cache
+      id: cache-system-libraries
+      uses: actions/cache@v3
+      with:
+        path: ${{env.EM_CACHE_FOLDER}}
+        key: ${{env.EM_VERSION}}-${{ runner.os }}
+
+    - name: Setup Emscripten toolchain
+      uses: mymindstorm/setup-emsdk@v12
+      with:
+        version: ${{ env.EM_VERSION }}
+        actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        registry-url: 'https://registry.npmjs.org'
+  
+    - name: Build
+      run: npm run build
+
+    - name: Publish to npm
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
