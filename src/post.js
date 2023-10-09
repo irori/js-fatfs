@@ -33,7 +33,6 @@
 	define_wrapper(number, 'f_expand', [pointer, number, number]);
 	define_wrapper(number, 'f_mount', [pointer, string, number]);
 	define_wrapper(number, 'f_mkfs', [string, pointer, pointer, number]);
-	define_wrapper(number, 'f_setcp', [number]);
 	define_wrapper(number, 'f_putc', [number, pointer]);
 	define_wrapper(number, 'f_puts', [string, pointer]);
 	// int f_printf (FIL* fp, const TCHAR* str, ...);
@@ -57,4 +56,11 @@
 
 	Module['malloc'] = Module['_malloc'];
 	Module['free'] = Module['_free'];
+
+	Module['onRuntimeInitialized'] = () => {
+		if (Module['codepage']) {
+			if (Module['_f_setcp'](Module['codepage']) !== FR_OK)
+				abort(`invalid codepage ${Module['codepage']}`);
+		}
+	};
 }

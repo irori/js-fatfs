@@ -147,8 +147,7 @@ test('create directory', async () => {
 });
 
 test('non-ASCII long filename', async () => {
-	const ff = await FatFs.create({ diskio: new MockDisk() });
-	expect(ff.f_setcp(932)).toBe(FatFs.FR_OK);
+	const ff = await FatFs.create({ diskio: new MockDisk(), codepage: 932 });
 	makeFileSystem(ff);
 	mount(ff);
 	createFile(ff, 'こんにちは.txt');

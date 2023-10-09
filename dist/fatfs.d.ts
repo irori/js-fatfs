@@ -30,7 +30,6 @@ export interface FatFs {
 	f_expand: (fp: pointer, fsz: number, opt: number) => number;
 	f_mount: (fs: pointer, path: string, opt: number) => number;
 	f_mkfs: (path: string, opt: pointer, work: pointer, len: number) => number;
-	f_setcp: (cp: number) => number;
 	f_putc: (chr: number, fp: pointer) => number;
 	f_puts: (str: string, fp: pointer) => number;
 	// int f_printf (FIL* fp, const TCHAR* str, ...);
@@ -70,6 +69,7 @@ export interface DiskIO {
 
 interface FatFsOptions {
 	diskio: DiskIO;
+	codepage?: number;  // corresponds to the f_setcp() function of FatFs
 }
 
 export declare function create(opts: FatFsOptions): Promise<FatFs>;
