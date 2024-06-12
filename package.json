@@ -1,5 +1,6 @@
 {
   "name": "js-fatfs",
+  "type": "module",
   "version": "0.1.0",
   "author": "irori <irorin@gmail.com>",
   "repository": {
