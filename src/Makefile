@@ -16,10 +16,10 @@ SRCS = binding.c $(FATFS)/ff.c $(FATFS)/ffunicode.c
 	emcc -Oz --post-js=post.js --extern-post-js=constants.js -I$(FATFS) $(EMFLAGS) -o $@ $(SRCS)
 
 constants.js: gen_constants.c $(FATFS)/ffconf.h
-	emcc -s ENVIRONMENT=node -I$(FATFS) gen_constants.c -o gen_constants.js
-	$(EMSDK_NODE) gen_constants.js >constants.js
+	emcc -s ENVIRONMENT=node -I$(FATFS) gen_constants.c -o gen_constants.cjs
+	$(EMSDK_NODE) gen_constants.cjs >constants.js
 
 clean:
-	rm -f constants.js gen_constants.js gen_constants.wasm ../dist/fatfs.js ../dist/fatfs.wasm
+	rm -f constants.js gen_constants.cjs gen_constants.wasm ../dist/fatfs.js ../dist/fatfs.wasm
 
 .PHONY: clean

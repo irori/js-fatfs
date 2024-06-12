@@ -1,5 +1,5 @@
 node_modules/
-src/gen_constants.js
+src/gen_constants.cjs
 src/gen_constants.wasm
 src/constants.js
 dist/fatfs.js
