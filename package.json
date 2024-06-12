@@ -1,11 +1,11 @@
 {
   "name": "js-fatfs",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "irori <irorin@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/irori/js-fatfs.git"
+    "url": "git+https://github.com/irori/js-fatfs.git"
   },
   "main": "./dist/fatfs.js",
   "description": "JavaScript/TypeScript bindings for the FatFs library.",
