@@ -5,7 +5,7 @@ on:
     - 'v*.*.*'
 
 env:
-  EM_VERSION: 3.1.46
+  EM_VERSION: 3.1.61
   EM_CACHE_FOLDER: 'emsdk-cache'
 
 jobs:
