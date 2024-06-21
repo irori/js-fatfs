@@ -8,6 +8,7 @@ void define_constant(const char* name, int value) {
 
 #define DEFINE_CONSTANT(name) define_constant(#name, name)
 #define DEFINE_SIZEOF(type) define_constant("sizeof_" #type, sizeof(type))
+#define DEFINE_OFFSET(type, member) define_constant("offsetof_" #type "_" #member, offsetof(type, member))
 
 int main() {
 	printf("\nexport const ");
@@ -20,6 +21,14 @@ int main() {
 	DEFINE_SIZEOF(FIL);
 	DEFINE_SIZEOF(DIR);
 	DEFINE_SIZEOF(FILINFO);
+	DEFINE_SIZEOF(MKFS_PARM);
+
+	// struct offsets
+	DEFINE_OFFSET(MKFS_PARM, fmt);
+	DEFINE_OFFSET(MKFS_PARM, n_fat);
+	DEFINE_OFFSET(MKFS_PARM, align);
+	DEFINE_OFFSET(MKFS_PARM, n_root);
+	DEFINE_OFFSET(MKFS_PARM, au_size);
 
 	/* File function return code (FRESULT) */
 	DEFINE_CONSTANT(FR_OK);

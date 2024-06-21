@@ -104,6 +104,14 @@ test('f_mkfs', async () => {
 	makeFileSystem(ff);
 });
 
+test('f_mkfs with options', async () => {
+	const ff = await FatFs.create({ diskio: new MockDisk() });
+	const work = ff.malloc(FatFs.FF_MAX_SS);
+	const opts = { fmt: FatFs.FM_FAT, n_fat: 1, align: 0, n_root: 0, au_size: 4096 };
+	expect(ff.f_mkfs('', opts, work, FatFs.FF_MAX_SS)).toBe(FatFs.FR_OK);
+	ff.free(work);
+});
+
 test('f_mount', async () => {
 	const ff = await FatFs.create({ diskio: new MockDisk() });
 	makeFileSystem(ff);

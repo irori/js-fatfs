@@ -29,7 +29,7 @@ export interface FatFs {
 	// FRESULT f_forward (FIL* fp, UINT(*func)(const BYTE*,UINT), UINT btf, UINT* bf);
 	f_expand: (fp: pointer, fsz: number, opt: number) => number;
 	f_mount: (fs: pointer, path: string, opt: number) => number;
-	f_mkfs: (path: string, opt: pointer, work: pointer, len: number) => number;
+	f_mkfs: (path: string, opt: pointer | MkfsParams, work: pointer, len: number) => number;
 	f_putc: (chr: number, fp: pointer) => number;
 	f_puts: (str: string, fp: pointer) => number;
 	// int f_printf (FIL* fp, const TCHAR* str, ...);
@@ -67,9 +67,17 @@ export interface DiskIO {
 	ioctl: (ff: FatFs, pdrv: number, cmd: number, buff: pointer) => number;
 }
 
-interface FatFsOptions {
+export type FatFsOptions = {
 	diskio: DiskIO;
 	codepage?: number;  // corresponds to the f_setcp() function of FatFs
+}
+
+export type MkfsParams = {
+	fmt: number;
+	n_fat: number;
+	align: number;
+	n_root: number;
+	au_size: number;
 }
 
 export declare function create(opts: FatFsOptions): Promise<FatFs>;
@@ -80,6 +88,12 @@ export declare const sizeof_FATFS: number;
 export declare const sizeof_FIL: number;
 export declare const sizeof_DIR: number;
 export declare const sizeof_FILINFO: number;
+export declare const sizeof_MKFS_PARM: number;
+export declare const offsetof_MKFS_PARM_fmt: number;
+export declare const offsetof_MKFS_PARM_n_fat: number;
+export declare const offsetof_MKFS_PARM_align: number;
+export declare const offsetof_MKFS_PARM_n_root: number;
+export declare const offsetof_MKFS_PARM_au_size: number;
 export declare const FR_OK: number;
 export declare const FR_DISK_ERR: number;
 export declare const FR_INT_ERR: number;

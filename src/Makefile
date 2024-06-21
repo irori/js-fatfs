@@ -6,8 +6,9 @@ EMFLAGS = \
 	-s MALLOC=emmalloc \
 	-s MODULARIZE \
 	-s EXPORT_ES6 \
-	-s EXPORTED_RUNTIME_METHODS=cwrap,getValue,setValue \
+	-s EXPORTED_RUNTIME_METHODS=getValue,setValue \
 	-s EXPORTED_FUNCTIONS=_malloc,_free \
+	-s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='$$cwrap,$$ccall,$$stackSave,$$stackAlloc,$$stackRestore' \
 
 FATFS = ../fatfs/source
 SRCS = binding.c $(FATFS)/ff.c $(FATFS)/ffunicode.c

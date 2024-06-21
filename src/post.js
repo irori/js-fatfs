@@ -1,6 +1,6 @@
 {
 	const define_wrapper = (rtype, name, argtypes) => {
-		Module[name] = Module.cwrap(name, rtype, argtypes);
+		Module[name] = cwrap(name, rtype, argtypes);
 	};
 	const number = 'number';
 	const string = 'string';
@@ -32,7 +32,22 @@
 	// FRESULT f_forward (FIL* fp, UINT(*func)(const BYTE*,UINT), UINT btf, UINT* bf);
 	define_wrapper(number, 'f_expand', [pointer, number, number]);
 	define_wrapper(number, 'f_mount', [pointer, string, number]);
-	define_wrapper(number, 'f_mkfs', [string, pointer, pointer, number]);
+	Module['f_mkfs'] = (path, opt, work, len) => {
+		let stack;
+		if (typeof opt === 'object') {
+			stack = stackSave();
+			const p_opt = stackAlloc(sizeof_MKFS_PARM);
+			HEAPU8[p_opt + offsetof_MKFS_PARM_fmt] = opt.fmt;
+			HEAPU8[p_opt + offsetof_MKFS_PARM_n_fat] = opt.n_fat;
+			HEAPU32[(p_opt + offsetof_MKFS_PARM_align) >> 2] = opt.align;
+			HEAPU32[(p_opt + offsetof_MKFS_PARM_n_root) >> 2] = opt.n_root;
+			HEAPU32[(p_opt + offsetof_MKFS_PARM_au_size) >> 2] = opt.au_size;
+			opt = p_opt;
+		}
+		const result = ccall('f_mkfs', number, [string, pointer, pointer, number], [path, opt, work, len]);
+		if (stack) stackRestore(stack);
+		return result;
+	};
 	define_wrapper(number, 'f_putc', [number, pointer]);
 	define_wrapper(number, 'f_puts', [string, pointer]);
 	// int f_printf (FIL* fp, const TCHAR* str, ...);
