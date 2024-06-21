@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.0 - 2024-06-21
+- `f_mkfs()` now accepts `opt` parameter as a JS object. (#3)
+
 ## 0.1.1 - 2024-06-13
 - Set `type=module` in package.json for some bundlers. (#2)
 
