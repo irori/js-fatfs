@@ -55,14 +55,14 @@
 
 	Module['f_eof'] = Module['_f_eof_'];
 	Module['f_error'] = Module['_f_error_'];
-	Module['f_tell'] = Module['_f_tell_'];
-	Module['f_size'] = Module['_f_size_'];
+	Module['f_tell'] = (fp) => Module['_f_tell_'](fp) >>> 0;
+	Module['f_size'] = (fp) => Module['_f_size_'](fp) >>> 0;
 	Module['f_rewind'] = (fp) => Module['f_lseek'](fp, 0);
 	Module['f_rewinddir'] = (dp) => Module['f_readdir'](dp, 0);
 	Module['f_rmdir'] = Module['f_unlink'];
 	Module['f_unmount'] = (path) => Module['f_mount'](0, path, 0);
 
-	Module['FILINFO_fsize'] = Module['_FILINFO_fsize'];
+	Module['FILINFO_fsize'] = (fno) => Module['_FILINFO_fsize'](fno) >>> 0;
 	Module['FILINFO_fdate'] = Module['_FILINFO_fdate'];
 	Module['FILINFO_ftime'] = Module['_FILINFO_ftime'];
 	Module['FILINFO_fattrib'] = Module['_FILINFO_fattrib'];
