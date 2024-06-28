@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 - 2024-06-28
+- Fixed a bug where `f_tell()`, `f_size()` and `FILINFO_fsize()` returned
+  negative values when the file size exceeded 2 GiB. (#4)
+
 ## 0.2.0 - 2024-06-21
 - `f_mkfs()` now accepts `opt` parameter as a JS object. (#3)
 
