@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Updated FatFs from R0.15 to R0.16.
 - Replaced the Emscripten build and runtime with direct clang/wasm-ld output
   and a small freestanding C and JavaScript runtime.
 
