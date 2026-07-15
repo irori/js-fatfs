@@ -1,0 +1,6 @@
+disk_initialize
+disk_status
+disk_read
+disk_write
+disk_ioctl
+js_get_fattime

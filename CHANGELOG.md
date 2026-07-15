@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- Replaced the Emscripten build and runtime with direct clang/wasm-ld output
+  and a small freestanding C and JavaScript runtime.
+
 ## 0.2.1 - 2024-06-28
 - Fixed a bug where `f_tell()`, `f_size()` and `FILINFO_fsize()` returned
   negative values when the file size exceeded 2 GiB. (#4)

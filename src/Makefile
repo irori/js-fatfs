@@ -1,26 +1,22 @@
-EMFLAGS = \
-	-s ENVIRONMENT=web,node \
-	-s ALLOW_MEMORY_GROWTH=1 \
-	-s STACK_SIZE=8192 \
-	-s INITIAL_MEMORY=1048576 \
-	-s MALLOC=emmalloc \
-	-s MODULARIZE \
-	-s EXPORT_ES6 \
-	-s EXPORTED_RUNTIME_METHODS=getValue,setValue \
-	-s EXPORTED_FUNCTIONS=_malloc,_free \
-	-s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='$$cwrap,$$ccall,$$stackSave,$$stackAlloc,$$stackRestore' \
+CC = clang
+NODE ?= node
 
 FATFS = ../fatfs/source
-SRCS = binding.c $(FATFS)/ff.c $(FATFS)/ffunicode.c
+SRCS = binding.c runtime.c gen_constants.c $(FATFS)/ff.c $(FATFS)/ffunicode.c
+CFLAGS = --target=wasm32 -std=c11 -Oz -flto -ffreestanding -fno-builtin -nostdlib \
+	-Iinclude -I$(FATFS)
+LDFLAGS = -Wl,--no-entry,--export-all,--export-memory,--allow-undefined-file=imports.txt \
+	-Wl,--initial-memory=1048576,--max-memory=2147483648,-z,stack-size=8192
 
-../dist/fatfs.js: $(SRCS) $(FATFS)/ffconf.h Makefile post.js constants.js
-	emcc -Oz --post-js=post.js --extern-post-js=constants.js -I$(FATFS) $(EMFLAGS) -o $@ $(SRCS)
+all: ../dist/fatfs.js ../dist/fatfs.wasm
 
-constants.js: gen_constants.c $(FATFS)/ffconf.h
-	emcc -s ENVIRONMENT=node -I$(FATFS) gen_constants.c -o gen_constants.cjs
-	$(EMSDK_NODE) gen_constants.cjs >constants.js
+../dist/fatfs.wasm: $(SRCS) $(FATFS)/ffconf.h Makefile imports.txt
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRCS)
+
+../dist/fatfs.js: ../dist/fatfs.wasm post.js gen_module.js
+	$(NODE) gen_module.js ../dist/fatfs.wasm post.js $@
 
 clean:
-	rm -f constants.js gen_constants.cjs gen_constants.wasm ../dist/fatfs.js ../dist/fatfs.wasm
+	rm -f ../dist/fatfs.js ../dist/fatfs.wasm
 
-.PHONY: clean
+.PHONY: all clean

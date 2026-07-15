@@ -105,6 +105,17 @@ test('f_mkfs', async () => {
 	makeFileSystem(ff);
 });
 
+test('memory grows beyond its initial size', async () => {
+	const ff = await FatFs.create({ diskio: new MockDisk() });
+	const initialSize = ff.HEAPU8.byteLength;
+	const ptr = ff.malloc(initialSize);
+	assert.notStrictEqual(ptr, 0);
+	assert.ok(ff.HEAPU8.byteLength > initialSize);
+	ff.HEAPU8[ptr + initialSize - 1] = 0x5a;
+	assert.strictEqual(ff.HEAPU8[ptr + initialSize - 1], 0x5a);
+	ff.free(ptr);
+});
+
 test('f_mkfs with options', async () => {
 	const ff = await FatFs.create({ diskio: new MockDisk() });
 	const work = ff.malloc(FatFs.FF_MAX_SS);

@@ -8,6 +8,18 @@ This library provides JavaScript/TypeScript bindings for ChaN's
 npm install js-fatfs
 ```
 
+## Development
+
+Building from source requires Node.js, `make`, and an LLVM toolchain with
+WebAssembly support (`clang` and `wasm-ld`). On Debian and Ubuntu, the LLVM
+tools are provided by the `clang` and `lld` packages.
+
+```sh
+npm ci
+npm run build
+npm test
+```
+
 ## Usage
 There is no API reference yet. Please refer to the [TypeScript definition
 file](dist/fatfs.d.ts), [tests](src/fatfs.test.ts) and [FatFs
