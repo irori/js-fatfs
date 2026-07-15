@@ -18,10 +18,11 @@
   ],
   "license": "BSD-1-Clause",
   "scripts": {
-    "build": "make -C src"
+    "build": "make -C src",
+    "test": "node --test src/fatfs.test.ts"
   },
   "types": "./dist/fatfs.d.ts",
   "devDependencies": {
-    "bun-types": "^1.0.3"
+    "@types/node": "^24.0.0"
   }
 }
